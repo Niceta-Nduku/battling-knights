@@ -12,5 +12,5 @@ class Item:
         return [self.x,self.y]
     
     def __str__(self) -> str:
-        f"{self.name}"
+        return f"\"{self.name}\" : [{self.get_position()},{self.equipped}]"
     

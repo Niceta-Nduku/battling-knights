@@ -16,6 +16,8 @@ class Game:
                         "Helmet": None, "MagicStaff": None}
         self.set_up()
 
+
+
     # set up game
     # - Create Tiles -> knights - > items
     def set_up(self):
@@ -29,7 +31,7 @@ class Game:
                 if (x == 0) and (y == 0):
                     piece = Knight(x, y, 1, 1, "Red")
                     square.occupant_knight = piece
-                    self.knights["Red": piece]
+                    self.knights["Red"] = piece
                     continue
 
                 # add second knight
@@ -37,7 +39,7 @@ class Game:
                 if (x == 0) and (y == 7):
                     piece = Knight(x, y, 1, 1, "Yellow")
                     square.occupant_knight = piece
-                    self.knights["Yellow": piece]
+                    self.knights["Yellow"] = piece
                     continue
 
                 # add first Item
@@ -46,7 +48,7 @@ class Game:
                 if (x == 2) and (y == 2):
                     piece = Item(x,y,defence=0,attack=2,name="Axe")
                     square.occupant_item = piece
-                    self.items["Axe": piece]
+                    self.items["Axe"] = piece
                     continue
 
                 # add second Item
@@ -55,25 +57,25 @@ class Game:
                 if (x == 2) and (y == 5):
                     piece = Item(x,y,defence=0,attack=1,name="Dagger")
                     square.occupant_item = piece
-                    self.items["Dagger": piece]
+                    self.items["Dagger"] = piece
                     continue
 
                 # add third Item
                 # MagicStaff (M) (5,2)
                 # MagicStaff (M): +1 Attack, +1 Defence
-                if (x == 5) and (y == 5):
+                if (x == 5) and (y == 2):
                     piece = Item(x,y,defence=1,attack=1,name="MagicStaff")
                     square.occupant_item = piece
-                    self.items["MagicStaff": piece]
+                    self.items["MagicStaff"] = piece
                     continue
 
                 # add fourth Item
                 # Helmet (H) (5,5)
                 # Helmet (H): +1 Defence
-                if (x == 0) and (y == 0):
+                if (x == 5) and (y == 5):
                     piece = Item(x,y,defence=1,attack=0,name="Helmet")
                     square.occupant_item = piece
-                    self.items["Helmet": piece]
+                    self.items["Helmet"] = piece
                     continue
 
                 # add third knight
@@ -81,7 +83,7 @@ class Game:
                 if (x == 7) and (y == 0):
                     piece = Knight(x, y, 1, 1, "Blue")
                     square.occupant_knight = piece
-                    self.knights["Blue": piece]
+                    self.knights["Blue"] = piece
                     continue
 
                 # add fourth knight
@@ -89,12 +91,35 @@ class Game:
                 if (x == 7) and (y == 7):
                     piece = Knight(x, y, 1, 1, "Green")
                     square.occupant_knight = piece
-                    self.knights["Green": piece]
+                    self.knights["Green"] = piece 
                     continue
+
+    # get board layout
+    def print_board(self):
+        
+        for knight in self.knights:
+            print(self.knights[knight])
+
+        for item in self.items:
+            print(self.items[item])
 
                 
 
 # move knight
+
+    def move(knight, direction):
+
+        if knight == "R":
+            pass
+
+        if knight == "B":
+            pass
+
+        if knight == "G":
+            pass
+
+        if knight == "Y":
+            pass
 
 # equip knight
 

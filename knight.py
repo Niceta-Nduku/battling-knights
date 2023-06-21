@@ -9,8 +9,7 @@ class Knight:
         self.dead = False
         self.drowned = False
         self.colour = colour
-
-
+    
     def get_status(self):
         if self.drowned:
             return "DROWNED"
@@ -21,8 +20,7 @@ class Knight:
     def get_position(self):
         return [self.x,self.y]
 
-
     def __str__(self) -> str:
-        return f"{self.colour}"
+        return f"\"{self.colour}\" : [{self.get_position()}, \"{self.get_status()}\",{self.item},{self.attack},{self.defence}]"
 
     
