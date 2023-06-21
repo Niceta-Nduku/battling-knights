@@ -8,7 +8,7 @@ class Knight:
         self.item = None
         self.dead = False
         self.drowned = False
-        self.colour = self.set_colour(colour)
+        self.colour = colour
 
 
     def get_status(self):
@@ -20,16 +20,6 @@ class Knight:
     
     def get_position(self):
         return [self.x,self.y]
-
-    def set_colour(self,colour):
-        if colour == "R":
-            self.colour = "Red"
-        if colour == "G":
-            self.colour = "Green"
-        if colour == "B":
-            self.colour = "Blue"
-        if colour == "Y":
-            self.colour = "Yellow"
 
 
     def __str__(self) -> str:
