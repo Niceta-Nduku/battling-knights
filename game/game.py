@@ -1,6 +1,7 @@
-from tile import Tile
-from knight import Knight
-from item import Item
+from game.tile import Tile
+from game.knight import Knight
+from game.item import Item
+import json
 
 
 class Game:
@@ -11,6 +12,7 @@ class Game:
                         "green": None, "yellow": None}
         self.items = {"magic_staff": None,
                       "helmet": None, "dagger": None, "axe": None}
+
         self.set_up()
 
     # set up game
@@ -95,11 +97,24 @@ class Game:
 
     def print_board(self):
 
+        results = {"red": None, "blue": None,
+                   "green": None, "yellow": None, "magic_staff": None,
+                   "helmet": None, "dagger": None, "axe": None}
+
         for knight in self.knights:
             print(self.knights[knight])
+            results[knight] = self.knights[knight].get_attributes()
 
         for item in self.items:
             print(self.items[item])
+            results[item] = self.items[item].get_attributes()
+
+            # Serializing json
+        json_object = json.dumps(results, indent=1)
+
+        # Writing to sample.json
+        with open("results.json", "w") as outfile:
+            outfile.write(json_object)
 
     # move knight
 
@@ -118,17 +133,19 @@ class Game:
         # 6.2 if knight is not null
         # 6.2.1 fight
 
-        if knight == "R":
+        if knight == 'R':
             active_knight = self.knights["red"]
 
-        elif knight == "B":
+        elif knight == 'B':
             active_knight = self.knights["blue"]
 
-        elif knight == "G":
+        elif knight == 'G':
             active_knight = self.knights["green"]
 
-        elif knight == "Y":
+        elif knight == 'Y':
             active_knight = self.knights["yellow"]
+        else:
+            raise Exception('Invalid knight. Please give a valid knight')
 
         if active_knight.dead or active_knight.drowned:
             return
@@ -136,21 +153,24 @@ class Game:
         current_x = active_knight.x
         current_y = active_knight.y
 
-        if direction == "N":
+        if direction == 'N':
             new_y = current_y
             new_x = current_x - 1
 
-        elif direction == "S":
+        elif direction == 'S':
             new_y = current_y
             new_x = current_x + 1
 
-        elif direction == "E":
+        elif direction == 'E':
             new_y = current_y + 1
             new_x = current_x
 
-        elif direction == "W":
+        elif direction == 'W':
             new_y = current_y - 1
             new_x = current_x
+        else:
+            raise Exception(
+                'Invalid direction. Please Enter a valid direction')
 
         if new_y < 0 or new_y > 7 or new_x < 0 or new_x > 7:
             self.__drown(active_knight)
@@ -163,16 +183,14 @@ class Game:
         tile = self.__get_tile_in_position(self.tiles, new_x, new_y)
 
         if active_knight.item == None:
-            if len(tile.occupant_items) > 0:                
+            if len(tile.occupant_items) > 0:
                 self.__equip_knight(tile.occupant_items, active_knight)
                 tile.occupant_items.remove(active_knight.item)
-                
+
         else:
-            #move with item
+            # move with item
             active_knight.item.x = new_x
             active_knight.item.y = new_y
-            
-            
 
         if tile.occupant_knight == None:
             # new tile occupant
@@ -199,37 +217,37 @@ class Game:
                 continue
 
             if (item.name == "axe"):
-                
-                knight.item = item
-                item.equpied = True
+                self.__equip(knight, item)
                 break
 
             elif (item.name == "magic_staff"):
-                knight.item = item
-                item.equpied = True
+                self.__equip(knight, item)
                 break
 
             elif (item.name == "dagger"):
-                knight.item = item
-                item.equpied = True
+                self.__equip(knight, item)
                 break
 
             elif (item.name == "helmet"):
-                knight.item = item
-                item.equpied = True
+                self.__equip(knight, item)
                 break
+
+    # equip
+    def __equip(self, knight, item):
+        knight.item = item
+        item.equpied = True
+        knight.attack = item.attack
+        knight.defence = item.defence
 
     # fight
     def __fight(self, knight_one, knight_two):
         # knight one is attacker
 
         # add 0.5 and item modifiers
-        knight_one_attack = knight_one.attack + knight_one.item.attack + 0.5
-
-        knight_two_defence = knight_two.defence + knight_two.item.defence
+        knight_one.attack = knight_one.attack + 0.5
 
         # compare results
-        if knight_one_attack > knight_two_defence:
+        if knight_one.attack > knight_two.defence:
             # knight two dies
             self.__die(knight_two)
             return True
@@ -249,7 +267,7 @@ class Game:
         knight.attack = 0
         knight.item = None
 
-    def __die (self, knight):
+    def __die(self, knight):
         knight.dead = True
         knight.defence = 0
         knight.attack = 0

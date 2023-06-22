@@ -18,9 +18,19 @@ class Knight:
         return "LIVE"
     
     def get_position(self):
+        if self.x == None or self.y == None:
+            return None
         return [self.x,self.y]
+    
+    def __get_item(self):
+        if self.item != None:
+            return self.item.name
+        return None
+
+    def get_attributes(self):
+        return [self.get_position(), self.get_status(),self.__get_item(),self.attack,self.defence]
 
     def __str__(self) -> str:
-        return f"\"{self.colour}\" : [{self.get_position()}, \"{self.get_status()}\",{self.item},{self.attack},{self.defence}]"
+        return f"\"{self.colour}\" : [{self.get_position()}, \"{self.get_status()}\",{self.__get_item()},{self.attack},{self.defence}]"
 
     

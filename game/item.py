@@ -10,6 +10,9 @@ class Item:
     
     def get_position(self):
         return [self.x,self.y]
+
+    def get_attributes(self):
+        return [self.get_position(),self.equipped]
     
     def __str__(self) -> str:
         return f"\"{self.name}\" : [{self.get_position()},{self.equipped}]"
