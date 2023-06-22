@@ -30,7 +30,7 @@ class Game:
                 # R (0,0) (top left)
                 if (x == 0) and (y == 0):
                     piece = Knight(x, y, 1, 1, "Red")
-                    square.occupant_knight = piece
+                    square.occupant_knights.append(piece)
                     self.knights["Red"] = piece
                     continue
 
@@ -38,7 +38,7 @@ class Game:
                 # Y (0,7) (top right)
                 if (x == 0) and (y == 7):
                     piece = Knight(x, y, 1, 1, "Yellow")
-                    square.occupant_knight = piece
+                    square.occupant_knights.append(piece)
                     self.knights["Yellow"] = piece
                     continue
 
@@ -47,7 +47,7 @@ class Game:
                 # Axe (A): +2 Attack
                 if (x == 2) and (y == 2):
                     piece = Item(x,y,defence=0,attack=2,name="Axe")
-                    square.occupant_item = piece
+                    square.occupant_items.append(piece)
                     self.items["Axe"] = piece
                     continue
 
@@ -56,7 +56,7 @@ class Game:
                 # Dagger (D): +1 Attack
                 if (x == 2) and (y == 5):
                     piece = Item(x,y,defence=0,attack=1,name="Dagger")
-                    square.occupant_item = piece
+                    square.occupant_items.append(piece)
                     self.items["Dagger"] = piece
                     continue
 
@@ -65,7 +65,7 @@ class Game:
                 # MagicStaff (M): +1 Attack, +1 Defence
                 if (x == 5) and (y == 2):
                     piece = Item(x,y,defence=1,attack=1,name="MagicStaff")
-                    square.occupant_item = piece
+                    square.occupant_items.append(piece)
                     self.items["MagicStaff"] = piece
                     continue
 
@@ -74,7 +74,7 @@ class Game:
                 # Helmet (H): +1 Defence
                 if (x == 5) and (y == 5):
                     piece = Item(x,y,defence=1,attack=0,name="Helmet")
-                    square.occupant_item = piece
+                    square.occupant_items.append(piece)
                     self.items["Helmet"] = piece
                     continue
 
@@ -82,7 +82,7 @@ class Game:
                 # B (7,0) (bottom left)
                 if (x == 7) and (y == 0):
                     piece = Knight(x, y, 1, 1, "Blue")
-                    square.occupant_knight = piece
+                    square.occupant_knights.append(piece)
                     self.knights["Blue"] = piece
                     continue
 
@@ -90,39 +90,102 @@ class Game:
                 # G (7,7) (bottom right)
                 if (x == 7) and (y == 7):
                     piece = Knight(x, y, 1, 1, "Green")
-                    square.occupant_knight = piece
+                    square.occupant_knights.append(piece)
                     self.knights["Green"] = piece 
                     continue
 
-    # get board layout
-    def print_board(self):
-        
-        for knight in self.knights:
-            print(self.knights[knight])
+        # get board layout
+        def print_board(self):
+            
+            for knight in self.knights:
+                print(self.knights[knight])
 
-        for item in self.items:
-            print(self.items[item])
+            for item in self.items:
+                print(self.items[item])
 
                 
 
-# move knight
+    # move knight
 
-    def move(knight, direction):
+        def move(knight, direction):
+            # 0. check if dead or drowned, if not continue
+            # 1. get current position
+            # 2. get new position
+            # 3. check if within boundaries
+            # 3.2 if outside drown
+            # 4. get tile in new position
+            # 5. get occupied knight
+            # 6.1 if knight null continue
+            # 6.1.1 if there is one item and knight not equiped , equip
+            # 6.1.2 if there is more item and knight not equiped, get best 
+            # 6.1.3 if knight is equiped, continue
+            # 6.2 if knight is not null
+            # 6.2.1 fight
 
-        if knight == "R":
-            pass
 
-        if knight == "B":
-            pass
 
-        if knight == "G":
-            pass
+            if knight == "R":
+                active_knight = self.knights["Red"]
 
-        if knight == "Y":
-            pass
+            if knight == "B":
+                active_knight = self.knights["Blue"]
 
-# equip knight
+            if knight == "G":
+                active_knight = self.knights["Green"]
 
-# fight
+            if knight == "Y":
+                active_knight = self.knights["Yellow"]
 
-# result
+            if active_knight.dead or active_knight.drowned:
+                return
+            
+            current_x = active_knight.x
+            current_y = active_knight.y
+            
+            if direction == "N":
+                new_y = current_y - 1
+                new_x = current_x
+
+            if direction == "S":
+                new_y = current_y + 1
+                new_x = current_x
+
+            if direction == "E":
+                new_y = current_y
+                new_x = current_x + 1 
+            
+            if direction == "W":
+                new_y = current_y
+                new_x = current_x - 1
+
+            if new_y < 0 or new_y > 7 or new_x < 0 or new_x > 7:
+
+                active_knight.drowned = True
+                return
+            
+            tile = get_tile_in_position(new_x,new_y)
+
+            if len(tile.occupant_knights) > 0:
+                #fight
+                pass
+            elif len(tile.occupant_items) > 0:
+                #equip
+                pass
+            else:
+                #move to new tile
+            
+
+            
+
+
+            
+        def get_tile_in_position(x,y):
+            return self.tiles[8 * x + y] 
+
+    # equip knight
+
+    # drown
+
+    # fight
+
+    # result
